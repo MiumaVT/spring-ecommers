@@ -1,6 +1,7 @@
 package com.miuma.ecommerce.springecommerce.model;
 
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @AllArgsConstructor
@@ -9,7 +10,12 @@ import lombok.*;
 @Setter
 @ToString
 
+@Entity
+@Table(name = "products")
+
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
     private String name;
@@ -17,5 +23,8 @@ public class Product {
     private String image;
     private double price;
     private int amount;
+
+    @ManyToOne //This is because ONE user can have many products
+    private User user;
 
 }

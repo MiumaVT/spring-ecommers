@@ -1,4 +1,5 @@
 package com.miuma.ecommerce.springecommerce.model;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -7,12 +8,22 @@ import lombok.*;
 @Setter
 @ToString
 
+@Entity
+@Table(name = "details")
 public class OrderDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
     private String name;
     private double amount;
     private double price;
     private double total;
+
+    @OneToOne //This is because in Order details we can see all orders/
+    private Order order;
+
+    @OneToOne //This is because through Order details we can see the products
+    private Product product;
 
 }

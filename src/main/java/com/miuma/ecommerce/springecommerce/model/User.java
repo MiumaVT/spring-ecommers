@@ -1,7 +1,10 @@
 package com.miuma.ecommerce.springecommerce.model;
 
 
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -9,7 +12,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
+@Entity
+@Table(name = "users")
+
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //This will be the ID variable be autoincrement
 
     private Integer id;
     private String name;
@@ -20,6 +28,9 @@ public class User {
     private String type;
     private String password;
 
+    @OneToMany(mappedBy = "user") //This is because the table Products are mapped by user table.
+    private List<Product> products;
 
-
+    @OneToMany(mappedBy = "user") //This anotation is because the table order is mapped by user table.
+    private List<Order> orders;
 }
