@@ -23,7 +23,7 @@ public class OrderDetails {
     @OneToOne //This is because in Order details we can see all orders/
     private Order order;
 
-    @OneToOne //This is because through Order details we can see the products
+    @ManyToOne //This is because through Order details we can see the products
     private Product product;
 
 }
