@@ -25,6 +25,7 @@ public class Product {
     private int amount;
 
     @ManyToOne //This is because ONE user can have many products
+    @ToString.Exclude
     private User user;
 
 }
