@@ -21,7 +21,7 @@
 <body>
 
 <!-- Navigation -->
-  <div th:include="admin/template_admin.html::header" ></div>
+  <div th:insert="~{admin/template_admin.html::header}" ></div>
 
 <!-- Page Content -->
 <div class="container">
@@ -38,44 +38,44 @@
   </ol>
 
   <h2>Crear Producto</h2>
-  <form class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+  <form class="form-horizontal" th:action="@{/products/save}" method="post" enctype="multipart/form-data">
     <div class="form-group">
-      <label class="control-label col-sm-2" for="nombre">Nombre:</label>
+      <label class="control-label col-sm-2" for="name">Nombre:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="nombre" name="nombre"
+        <input type="text" class="form-control" id="name" name="name"
         placeholder="Ingrese el nombre del producto" autocomplete="off" required>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-2" for="descripcion">Descripción:</label>
+      <label class="control-label col-sm-2" for="description">Descripción:</label>
       <div class="col-sm-10">
-        <textarea class="form-control" id="descripcion" name="descripcion"
+        <textarea class="form-control" id="description" name="description"
         placeholder="Ingrese la descripcion del producto" required
         autocomplete="off"> </textarea>
       </div>
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-2" for="cantidad">Cantidad:</label>
+      <label class="control-label col-sm-2" for="amount">Cantidad:</label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" id="cantidad"
-        name="cantidad" placeholder="Ingrese la cantidad del producto"
+        <input type="number" class="form-control" id="amount"
+        name="amount" placeholder="Ingrese la cantidad del producto"
         required autocomplete="off">
       </div>
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-2" for="precio">Precio:</label>
+      <label class="control-label col-sm-2" for="price">Precio:</label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" step="any" id="precio" name="precio"
+        <input type="number" class="form-control" step="any" id="price" name="price"
         placeholder="Ingrese el precio del producto" autocomplete="off" required>
       </div>
     </div>
 
     <div class="form-group">
-      <label class="control-label col-sm-2" for="img">Imagen:</label>
+      <label class="control-label col-sm-2" for="image">Imagen:</label>
       <div class="col-sm-10">
-        <input type="file" class="form-control-file" id="img" name="img">
+        <input type="file" class="form-control-file" id="image" name="img">
       </div>
     </div>
 
@@ -93,7 +93,7 @@
 <!-- /.container -->
 
 <!-- Footer -->
-<div th:include="admin/template_admin.html::footer" ></div>
+<div th:insert="~{admin/template_admin.html::footer}" ></div>
 
 <!-- Bootstrap core JavaScript -->
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>

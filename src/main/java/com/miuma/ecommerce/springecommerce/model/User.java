@@ -9,8 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 
 @Entity
 @Table(name = "users")
@@ -33,4 +31,18 @@ public class User {
 
     @OneToMany(mappedBy = "user") //This anotation is because the table order is mapped by user table.
     private List<Order> orders;
+
+    public User() {
+    }
+
+    public User(Integer id, String name, String username, String email, String addres, String phone, String type, String password) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.addres = addres;
+        this.phone = phone;
+        this.type = type;
+        this.password = password;
+    }
 }
