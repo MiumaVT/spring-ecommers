@@ -3,15 +3,15 @@ package com.miuma.ecommerce.springecommerce.controller;
 import com.miuma.ecommerce.springecommerce.model.Product;
 import com.miuma.ecommerce.springecommerce.model.User;
 import com.miuma.ecommerce.springecommerce.service.ProductService;
+import com.miuma.ecommerce.springecommerce.service.UploadFileService;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +23,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UploadFileService upload;
 
     @GetMapping("")
     public String show(Model model) {
@@ -37,10 +40,25 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String save(Product product){
+    public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
         LOGGER.info("This is the object product {}", product);
         User u = new User(1, "", "", "", "", "", "", "");
         product.setUser(u);
+
+        //Image
+        if(product.getId()==null){ //When is created a product
+            String imgName = upload.saveImage(file);
+            product.setImage(imgName);
+        }else {
+            if(file.isEmpty()){ //Edit product without change image
+                Product p = new Product();
+                p=productService.get(product.getId()).get();
+                product.setImage(p.getImage());
+            }else {
+                String imgName = upload.saveImage(file);
+                product.setImage(imgName);
+            }
+        }
 
         productService.save(product);
         return "redirect:/products";
