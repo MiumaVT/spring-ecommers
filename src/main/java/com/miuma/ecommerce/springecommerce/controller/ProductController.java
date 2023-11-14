@@ -49,15 +49,6 @@ public class ProductController {
         if(product.getId()==null){ //When is created a product
             String imgName = upload.saveImage(file);
             product.setImage(imgName);
-        }else {
-            if(file.isEmpty()){ //Edit product without change image
-                Product p = new Product();
-                p=productService.get(product.getId()).get();
-                product.setImage(p.getImage());
-            }else {
-                String imgName = upload.saveImage(file);
-                product.setImage(imgName);
-            }
         }
 
         productService.save(product);
@@ -76,13 +67,36 @@ public class ProductController {
     }
 
     @PostMapping("/update")
-    public String update(Product product) {
+    public String update(Product product, @RequestParam("img") MultipartFile file) throws IOException {
+        Product p = new Product();
+        p=productService.get(product.getId()).get();
+
+        if(file.isEmpty()){ //Edit product without change image
+            product.setImage(p.getImage());
+        }else {//When imagen even edit
+            //Delete when the images ist'n by default
+            if (!p.getImage().equals("default.jpg")){
+                upload.deleteImage(p.getImage());
+            }
+
+            String imgName = upload.saveImage(file);
+            product.setImage(imgName);
+        }
+        product.setUser(p.getUser());
         productService.update(product);
         return "redirect:/products";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id){
+        Product p = new Product();
+        p=productService.get(id).get();
+
+        //Delete when the images ist'n by default
+        if (p.getImage().equals("default.jpg")){
+            upload.deleteImage(p.getImage());
+        }
+
         productService.delete(id);
         return "redirect:/products";
     }
