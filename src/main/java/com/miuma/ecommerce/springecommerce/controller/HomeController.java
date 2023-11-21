@@ -50,7 +50,7 @@ public class HomeController {
     }
 
     @PostMapping("/cart")
-    public String addCart(@RequestParam Integer id, @RequestParam Integer amount){
+    public String addCart(@RequestParam Integer id, @RequestParam Integer amount, Model model){
         OrderDetails orderDetails = new OrderDetails();
         Product product = new Product();
         double sum = 0;
@@ -58,6 +58,21 @@ public class HomeController {
         Optional<Product> optionalProduct = productService.get(id);
         log.info("Add product: {}", optionalProduct.get());
         log.info("Amount: {}", amount);
+        product = optionalProduct.get();
+
+        orderDetails.setAmount(amount);
+        orderDetails.setPrice(product.getPrice());
+        orderDetails.setName(product.getName());
+        orderDetails.setTotal(product.getPrice()*amount);
+        orderDetails.setProduct(product);
+
+        details.add(orderDetails);
+
+        sum = details.stream().mapToDouble(dt -> dt.getTotal()).sum(); //Lamda function
+
+        order.setTotal(sum);
+        model.addAttribute("cart", details);
+        model.addAttribute("order", order);
 
         return "user/cart";
     }
