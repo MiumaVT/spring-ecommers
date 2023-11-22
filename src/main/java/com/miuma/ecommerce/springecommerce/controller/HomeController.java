@@ -66,7 +66,13 @@ public class HomeController {
         orderDetails.setTotal(product.getPrice()*amount);
         orderDetails.setProduct(product);
 
-        details.add(orderDetails);
+        //Valide that product doesn't added twice
+        Integer idProduct = product.getId();
+        boolean joined = details.stream().anyMatch(p -> p.getProduct().getId().equals(idProduct));
+
+        if (! joined) {
+            details.add(orderDetails);
+        }
 
         sum = details.stream().mapToDouble(dt -> dt.getTotal()).sum(); //Lamda function
 
@@ -101,6 +107,14 @@ public class HomeController {
         model.addAttribute("order", order);
 
         return "user/cart";
+    }
+
+    @GetMapping("/getCart")
+    public String getCart(Model model){
+
+        model.addAttribute("cart", details);
+        model.addAttribute("order", order);
+        return "/user/cart";
     }
 
 }
