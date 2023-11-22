@@ -77,4 +77,30 @@ public class HomeController {
         return "user/cart";
     }
 
+    //Remove a product from cart
+    @GetMapping("/delete/cart/{id}")
+    public String deleteProductCart(@PathVariable Integer id, Model model){
+
+        //New list of products
+        List<OrderDetails> newOrders = new ArrayList<OrderDetails>();
+
+        for (OrderDetails orderDetails: details){
+            if (orderDetails.getProduct().getId()!=id){
+                newOrders.add(orderDetails);
+            }
+        }
+
+        //Put new list with remaining products
+        details = newOrders;
+
+        double sum = 0;
+        sum = details.stream().mapToDouble(dt -> dt.getTotal()).sum(); //Lamda function
+
+        order.setTotal(sum);
+        model.addAttribute("cart", details);
+        model.addAttribute("order", order);
+
+        return "user/cart";
+    }
+
 }
