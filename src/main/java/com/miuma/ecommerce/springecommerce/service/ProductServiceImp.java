@@ -1,7 +1,7 @@
 package com.miuma.ecommerce.springecommerce.service;
 
 import com.miuma.ecommerce.springecommerce.model.Product;
-import com.miuma.ecommerce.springecommerce.repository.ProductRepository;
+import com.miuma.ecommerce.springecommerce.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ProductServiceImp implements ProductService{
 
     @Autowired
-    private ProductRepository productRepository;
+    private IProductRepository productRepository;
 
     @Override
     public Product save(Product product) {
