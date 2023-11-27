@@ -49,32 +49,31 @@
               <h5 class="card-title">
                 DATOS ORDEN
               </h5>
-              <h6>Nombre: </h6>
-              <h6 >Correo: </h6>
-              <h6 >Dirección</h6>
+              <h6 th:text="'Nombre: ' + ${user.name}">Nombre: </h6>
+              <h6 th:text="'Correo: ' + ${user.email}">Correo: </h6>
+              <h6 th:text="'Dirección: ' + ${user.addres}">Dirección: </h6>
 
               <h5 class="card-title">
                 PRODUCTOS
               </h5>
               <div class="alert alert-light" role="alert">
                 <table class="table">
-                  <thead>
+                    <thead>
                     <tr>
-                      <th scope="col">Producto</th>
-                      <th scope="col">Precio</th>
-                      <th scope="col">Cantidad</th>
-                      <th scope="col">Total</th>
+                        <td scope="col">Nombre</td>
+                        <td scope="col">Precio</td>
+                        <td scope="col">Cantidad</td>
+                        <td scope="col">Total</td>
                     </tr>
-                  </thead>
+                    </thead>
                   <tbody>
-                    <tr>
-                     <td >Nombre</td>
-                     <td >Precio</td>
-                     <td>Cantidad</td>
-                     <td >Total</td>
-
-                   </tr>
-                 </tbody>
+                    <tr th:each="dtorder:${cart}">
+                      <th th:text="${dtorder.name}"></th>
+                      <th th:text="${dtorder.price}"></th>
+                      <th th:text="${dtorder.amount}"></th>
+                      <th th:text="${dtorder.total}"></th>
+                    </tr>
+                  </tbody>
                </table>
              </div>
 
@@ -86,7 +85,7 @@
           <h2 class="card-title">Resumen Orden</h2>
 
           <ul class="list-group">
-            <li class="list-group-item"><h5> Total:</h5></li>
+            <li class="list-group-item"><h5 th:text=" 'Total:' + ${order.total}"> </h5></li>
             <a href="#" class="btn btn-dark">Generar</a>
                     </ul>
                 </div>

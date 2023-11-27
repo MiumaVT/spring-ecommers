@@ -3,6 +3,8 @@ package com.miuma.ecommerce.springecommerce.controller;
 import com.miuma.ecommerce.springecommerce.model.Order;
 import com.miuma.ecommerce.springecommerce.model.OrderDetails;
 import com.miuma.ecommerce.springecommerce.model.Product;
+import com.miuma.ecommerce.springecommerce.model.User;
+import com.miuma.ecommerce.springecommerce.service.IUserService;
 import com.miuma.ecommerce.springecommerce.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,10 @@ public class HomeController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private IUserService userService;
+
 
     //To store details on the order
     List<OrderDetails> details = new ArrayList<OrderDetails>();
@@ -118,7 +124,14 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order() {
+    public String order(Model model) {
+
+        User user = userService.findById(1).get();
+
+        model.addAttribute("cart", details);
+        model.addAttribute("order", order);
+        model.addAttribute("user", user);
+
         return "user/orderresume";
     }
 
