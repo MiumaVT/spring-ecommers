@@ -1,6 +1,7 @@
 package com.miuma.ecommerce.springecommerce.service;
 
 import com.miuma.ecommerce.springecommerce.model.Order;
+import com.miuma.ecommerce.springecommerce.repository.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +12,16 @@ import java.util.List;
 public class OrderServiceImp implements IOrderService{
 
     @Autowired
-    private IOrderService orderService;
-
-    @Override
-    public List<Order> findAll() {
-        return orderService.findAll();
-    }
+    private IOrderRepository orderRepository;
 
     @Override
     public Order save(Order order) {
-        return orderService.save(order);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
     }
 
     public String generateOrderNumber() {
@@ -37,7 +38,7 @@ public class OrderServiceImp implements IOrderService{
         if(orders.isEmpty()) {
             number = 1;
         }else {
-            number = numbers.stream().max(Integer::compare).get();
+            number = numbers.stream().max(Integer::compareTo).get();
             number++;
         }
 

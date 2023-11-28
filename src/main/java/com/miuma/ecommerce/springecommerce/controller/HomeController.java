@@ -4,6 +4,8 @@ import com.miuma.ecommerce.springecommerce.model.Order;
 import com.miuma.ecommerce.springecommerce.model.OrderDetails;
 import com.miuma.ecommerce.springecommerce.model.Product;
 import com.miuma.ecommerce.springecommerce.model.User;
+import com.miuma.ecommerce.springecommerce.service.IOrderDetailsService;
+import com.miuma.ecommerce.springecommerce.service.IOrderService;
 import com.miuma.ecommerce.springecommerce.service.IUserService;
 import com.miuma.ecommerce.springecommerce.service.ProductService;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,12 @@ public class HomeController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IOrderService orderService;
+
+    @Autowired
+    private IOrderDetailsService orderDetailsService;
 
 
     //To store details on the order
@@ -133,6 +142,32 @@ public class HomeController {
         model.addAttribute("user", user);
 
         return "user/orderresume";
+    }
+
+    //Save Order
+    @GetMapping("/saveOrder")
+    public String saveOrder() {
+        Date creationDate = new Date();
+        order.setCreationDate(creationDate);
+        order.setNumber(orderService.generateOrderNumber());
+
+        //User
+        User user = userService.findById(1).get(); //Testing
+
+        order.setUser(user);
+        orderService.save(order);
+
+        //Save details
+        for (OrderDetails dt:details) {
+            dt.setOrder(order);
+            orderDetailsService.save(dt);
+        }
+
+        //Cleaning list and order
+        order = new Order();
+        details.clear();
+
+        return "redirect:/";
     }
 
 }
