@@ -17,4 +17,9 @@ public class UserServiceImp implements IUserService{
     public Optional<User> findById(Integer id) {
         return userRepository.findById(id);
     }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }
