@@ -51,7 +51,11 @@ public class HomeController {
     public String home(Model model, HttpSession session){
 
         log.info("Sesion del usuario {}", session.getAttribute("iduser"));
+
         model.addAttribute("products", productService.findAll());
+
+        //Session view
+        model.addAttribute("session", session.getAttribute("iduser"));
 
         return "user/home";
     }
@@ -129,7 +133,7 @@ public class HomeController {
     }
 
     @GetMapping("/getCart")
-    public String getCart(Model model){
+    public String getCart(Model model, HttpSession session){
 
         model.addAttribute("cart", details);
         model.addAttribute("order", order);
@@ -144,6 +148,9 @@ public class HomeController {
         model.addAttribute("cart", details);
         model.addAttribute("order", order);
         model.addAttribute("user", user);
+
+        //session
+        model.addAttribute("session", session.getAttribute("iduser"));
 
         return "user/orderresume";
     }

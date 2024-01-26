@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>PokeTienda MX</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -21,7 +21,11 @@
 <body>
 
   <!-- Navigation -->
-  <div th:insert="~{user/template_user.html::header}">
+  <div th:insert="~{user/template_user.html::header}" th:if="${session == null}">
+
+  </div>
+
+  <div th:insert="~{user/template_user.html::header-user}" th:unless="${session == null}">
 
   </div>
 
