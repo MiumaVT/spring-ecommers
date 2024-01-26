@@ -1,6 +1,8 @@
 package com.miuma.ecommerce.springecommerce.controller;
 
+import com.miuma.ecommerce.springecommerce.model.Order;
 import com.miuma.ecommerce.springecommerce.model.User;
+import com.miuma.ecommerce.springecommerce.service.IOrderService;
 import com.miuma.ecommerce.springecommerce.service.IUserService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +25,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IOrderService orderService;
 
     //          /user/registration
     @GetMapping("/registration")
@@ -67,6 +73,12 @@ public class UserController {
     @GetMapping("/shopping")
     public String getShopping(Model model, HttpSession session){
         model.addAttribute("session", session.getAttribute("iduser"));
+
+        User user = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get();
+        List<Order> orders = orderService.findByUser(user);
+
+        model.addAttribute("orders", orders);
+
         return "user/shopping";
     }
 
