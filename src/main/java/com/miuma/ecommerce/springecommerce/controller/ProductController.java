@@ -2,8 +2,11 @@ package com.miuma.ecommerce.springecommerce.controller;
 
 import com.miuma.ecommerce.springecommerce.model.Product;
 import com.miuma.ecommerce.springecommerce.model.User;
+import com.miuma.ecommerce.springecommerce.service.IUserService;
 import com.miuma.ecommerce.springecommerce.service.ProductService;
 import com.miuma.ecommerce.springecommerce.service.UploadFileService;
+import com.miuma.ecommerce.springecommerce.service.UserServiceImp;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,9 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
+    private IUserService userService;
+
+    @Autowired
     private UploadFileService upload;
 
     @GetMapping("")
@@ -40,9 +46,11 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
+    public String save(Product product, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         LOGGER.info("This is the object product {}", product);
-        User u = new User(1, "", "", "", "", "", "", "");
+
+
+        User u = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get();
         product.setUser(u);
 
         //Image

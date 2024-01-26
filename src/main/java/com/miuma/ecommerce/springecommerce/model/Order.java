@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -28,7 +29,7 @@ public class Order {
     @ManyToOne //This is because ONE user can have many orders.
     private User user;
 
-    @OneToOne(mappedBy = "order") //This is because the order will have only one OrderDetails.
-    private OrderDetails details;
+    @OneToMany(mappedBy = "order") //This is because the order will have only one OrderDetails.
+    private List<OrderDetails> details;
 
 }

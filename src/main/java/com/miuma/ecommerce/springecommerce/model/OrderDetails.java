@@ -20,7 +20,7 @@ public class OrderDetails {
     private double price;
     private double total;
 
-    @OneToOne //This is because in Order details we can see all orders/
+    @ManyToOne //This is because in Order details we can see all orders/
     private Order order;
 
     @ManyToOne //This is because through Order details we can see the products

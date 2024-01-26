@@ -8,6 +8,7 @@ import com.miuma.ecommerce.springecommerce.service.IOrderDetailsService;
 import com.miuma.ecommerce.springecommerce.service.IOrderService;
 import com.miuma.ecommerce.springecommerce.service.IUserService;
 import com.miuma.ecommerce.springecommerce.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,9 @@ public class HomeController {
     Order order = new Order();
 
     @GetMapping("")
-    public String home(Model model){
+    public String home(Model model, HttpSession session){
+
+        log.info("Sesion del usuario {}", session.getAttribute("iduser"));
         model.addAttribute("products", productService.findAll());
 
         return "user/home";
@@ -134,9 +137,9 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order(Model model) {
+    public String order(Model model, HttpSession session) {
 
-        User user = userService.findById(1).get();
+        User user = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get();
 
         model.addAttribute("cart", details);
         model.addAttribute("order", order);
@@ -147,13 +150,13 @@ public class HomeController {
 
     //Save Order
     @GetMapping("/saveOrder")
-    public String saveOrder() {
+    public String saveOrder(HttpSession session) {
         Date creationDate = new Date();
         order.setCreationDate(creationDate);
         order.setNumber(orderService.generateOrderNumber());
 
         //User
-        User user = userService.findById(1).get(); //Testing
+        User user = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get(); //Dinamic
 
         order.setUser(user);
         orderService.save(order);
