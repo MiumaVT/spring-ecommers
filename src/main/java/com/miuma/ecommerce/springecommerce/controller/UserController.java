@@ -95,4 +95,13 @@ public class UserController {
         return "user/shoppingdetails";
     }
 
+    @GetMapping("logout")
+    public String logOut(HttpSession session){
+        session.removeAttribute("iduser");
+
+        logger.info("Esta cerrando la sesion");
+
+        return "redirect:/";
+    }
+
 }

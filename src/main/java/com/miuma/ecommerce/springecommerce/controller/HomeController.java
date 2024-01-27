@@ -47,7 +47,7 @@ public class HomeController {
     //Order details
     Order order = new Order();
 
-    @GetMapping("")
+    @GetMapping("/")
     public String home(Model model, HttpSession session){
 
         log.info("Sesion del usuario {}", session.getAttribute("iduser"));
